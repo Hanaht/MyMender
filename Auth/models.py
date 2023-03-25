@@ -71,3 +71,10 @@ class admin(models.Model):
     
     def __str__(self):
         return str(self.user_ID)
+    
+class department(models.Model):
+    ID= models.AutoField(primary_key=True)
+    dep_name=models.CharField(max_length=500, null=True)
+    date_created=models.DateTimeField(auto_now_add=True, null=True)
+    def __str__(self):
+        return str(self.dep_name)

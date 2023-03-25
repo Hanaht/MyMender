@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, admin
+from .models import User, admin, department
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,3 +34,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         account.set_password(password)
         account.save()
         return account
+
+class departmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = department
+        fields=('__all__')
