@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,9 +18,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'Auth',
     'Bid',
+    'announcement',
 ]
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,17 +62,18 @@ WSGI_APPLICATION = 'MymenderProject.wsgi.application'
 # }
 DATABASES = {  
         'default': {  
-            'ENGINE': 'django.db.backends.mysql',  
-            'NAME': 'mymender',  
-            'USER': 'root',  
-            'PASSWORD': 'hanaht123',  
-            'HOST': '127.0.0.1',  
-            'PORT': '3306',  
+           'ENGINE': 'django.db.backends.mysql',  
+            'NAME': config('DB_NAME'),  
+            'USER':  config('DB_USER'),  
+            'PASSWORD':  config('DB_USER_PASSWORD'),  
+            'HOST':  config('DB_HOST'),  
+            'PORT':  config('DB_PORT'),  
             'OPTIONS': {  
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
             }  
         }  
     }  
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -85,6 +91,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+#AUTH_USER_MODEL = 'core.User'
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "Auth.serializers.RegistrationSerializer",
+}
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -96,3 +108,4 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL='Auth.User'
