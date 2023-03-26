@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-qg!qxn=7u9x^xepmuix@hlh_u(5n72nx2vin5wkq$#$-+ap)^c'
@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'Auth',
     'Bid',
+    'feedback',
 ]
 
 MIDDLEWARE = [
@@ -55,14 +56,27 @@ WSGI_APPLICATION = 'MymenderProject.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {  
+#         'default': {  
+#             'ENGINE': 'django.db.backends.mysql',  
+#             'NAME': 'mymender',  
+#             'USER': 'root',  
+#             'PASSWORD': 'hanaht123',  
+#             'HOST': '127.0.0.1',  
+#             'PORT': '3306',  
+#             'OPTIONS': {  
+#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+#             }  
+#         }  
+#     }  
 DATABASES = {  
         'default': {  
-            'ENGINE': 'django.db.backends.mysql',  
-            'NAME': 'mymender',  
-            'USER': 'root',  
-            'PASSWORD': 'hanaht123',  
-            'HOST': '127.0.0.1',  
-            'PORT': '3306',  
+           'ENGINE': 'django.db.backends.mysql',  
+            'NAME': config('DB_NAME'),  
+            'USER':  config('DB_USER'),  
+            'PASSWORD':  config('DB_USER_PASSWORD'),  
+            'HOST':  config('DB_HOST'),  
+            'PORT':  config('DB_PORT'),  
             'OPTIONS': {  
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
             }  
