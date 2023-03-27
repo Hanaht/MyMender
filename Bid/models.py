@@ -1,12 +1,12 @@
 from django.db import models
 from django.conf import settings
-from .models import BidInfo
+#from .models import BidInfo
 # Create your models here.
 ...
 class Bid(models.Model):
     id = models.AutoField(primary_key=True)
     price = models.FloatField()
-    bidInfo_id = models.ForeignKey(BidInfo, null=True, on_delete=models.CASCADE)
+    bidInfo_id = models.ForeignKey("BidInfo", null=True, on_delete=models.CASCADE)
     numberOfExperience=models.IntegerField()
 
     # customer_id = models.ForeignKey(
