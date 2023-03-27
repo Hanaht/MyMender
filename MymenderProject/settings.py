@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'Bid',
     'feedback',
     'announcement',
+    'services'
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
