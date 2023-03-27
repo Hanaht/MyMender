@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'Auth',
     'Bid',
+    'feedback',
     'announcement',
 ]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -60,6 +61,19 @@ WSGI_APPLICATION = 'MymenderProject.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {  
+#         'default': {  
+#             'ENGINE': 'django.db.backends.mysql',  
+#             'NAME': 'mymender',  
+#             'USER': 'root',  
+#             'PASSWORD': 'hanaht123',  
+#             'HOST': '127.0.0.1',  
+#             'PORT': '3306',  
+#             'OPTIONS': {  
+#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+#             }  
+#         }  
+#     }  
 DATABASES = {  
         'default': {  
            'ENGINE': 'django.db.backends.mysql',  
