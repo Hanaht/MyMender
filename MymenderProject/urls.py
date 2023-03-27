@@ -5,7 +5,8 @@ urlpatterns =[
     path('admin/', admin.site.urls),
     path('api/bid/', include('Bid.urls')),
     path('api/feedback/', include('feedback.urls')),
-    path('announce/', include('announcement.urls')),
-    path('auth/', include('Auth.urls')),
+    path('api/announce/', include('announcement.urls')),
+    path('api/auth/', include('Auth.urls')),
+    path('api/services/', include('services.urls')),
 
 ]
