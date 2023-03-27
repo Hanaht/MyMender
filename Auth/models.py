@@ -71,6 +71,15 @@ class admin(models.Model):
     
     def __str__(self):
         return str(self.user_ID)
+
+class customer(models.Model):
+    ID= models.AutoField(primary_key=True)
+    #user_ID = models.ForeignKey(User, to_field='identification_number',on_delete=models.CASCADE)
+    user_ID = models.ForeignKey("User",to_field='identification_number', on_delete=models.CASCADE)
+    date_created=models.DateTimeField(auto_now_add=True, null=True)
+    
+    def __str__(self):
+        return str(self.user_ID)
     
 class department(models.Model):
     ID= models.AutoField(primary_key=True)
