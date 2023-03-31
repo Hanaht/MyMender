@@ -11,8 +11,8 @@ class schedule_app(APIView):
     serializer_class=appSerializer
     
     def get(self, request, format=None):
-        announce = appointment.objects.all()
-        serializer = appSerializer(announce, many=True)
+        app = appointment.objects.all()
+        serializer = appSerializer(app, many=True)
         return Response(serializer.data)
   
     def post(self, request, format=None):

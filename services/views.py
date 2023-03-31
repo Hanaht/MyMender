@@ -40,7 +40,22 @@ class Requirment_list(APIView):
                             status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
-
+# class Adminservices_list(APIView):
+#     serializer_class=Admmin_serviceSerializer
+    
+#     def get(self, request, format=None):
+#         admin_serve = admin_services.objects.all()
+#         serializer = Admmin_serviceSerializer( admin_serve, many=True)
+#         return Response(serializer.data)
+  
+#     def post(self, request, format=None):
+#         serializer = Admmin_serviceSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data,
+#                             status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  
 
 
 

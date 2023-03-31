@@ -4,4 +4,4 @@ from .models import appointment
 class appSerializer(serializers.ModelSerializer):
     class Meta:
         model = appointment
-        fields=['customer_ID','admin_service_ID ','dep_ID','app_date']
+        fields=['customer_ID','adminservice_ID','dep_ID','app_date']
