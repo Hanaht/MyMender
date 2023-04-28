@@ -19,7 +19,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
-    def create_superuser(self, identification_number, first_name,last_name, email, password=None):
+    def create_superuser(self, identification_number, first_name,last_name, email, password):
         user=self.create_user(
             email=self.normalize_email(email),
             identification_number=identification_number,
@@ -43,8 +43,7 @@ class User(AbstractBaseUser):
     identification_number=models.BigIntegerField(unique=True,)
     first_name = models.CharField(max_length=500, blank=False, null=False)
     last_name = models.CharField(max_length=500, blank=False, null=False)
-    password=models.CharField(max_length=100)
-    password2=models.CharField(max_length=100)
+    password= models.CharField(max_length=500, blank=False, null=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
