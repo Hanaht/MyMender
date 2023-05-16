@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'knox',
     'Auth',
     'Bid',
     'feedback',
@@ -112,7 +114,18 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "Auth.serializers.RegistrationSerializer",
 }
-
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'Accounts.serializers.LoginUserSerializer',
+}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#         'rest_framework.permissions.DjangoModelPermissions'
+#     )
+# }
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
