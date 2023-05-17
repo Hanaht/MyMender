@@ -1,13 +1,14 @@
 from django.urls import path
 from . import views
 from knox import views as knox_views
-from .views import  user_list, admin_list,dep,register_user,UserLoginView,UserLogoutView
+from .views import  user_list, admin_list,dep,register_user,UserLoginView,UserLogoutView,register_admin
 urlpatterns = [
-     path('user_list/',user_list.as_view()),
+     path('user_list/',user_list.as_view(), name="user_list"),
      #path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
      path('register_user/',register_user.as_view()),
+     path('register_admin/',register_admin.as_view()),
      path('admin_list/',admin_list.as_view()),
-     path('dep/',dep.as_view()),
+     path('dep/',dep.as_view(),name="dep"),
      
      path('login/', UserLoginView.as_view()),
      path('login/', UserLogoutView.as_view()),

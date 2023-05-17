@@ -14,6 +14,14 @@ class Service_list(APIView):
         service = services.objects.all()
         serializer = ServiceSerializer(service, many=True)
         return Response(serializer.data)
+
+class Record_Service(APIView):
+    serializer_class=ServiceSerializer
+    
+    def get(self, request, format=None):
+        service = services.objects.all()
+        serializer = ServiceSerializer(service, many=True)
+        return Response(serializer.data)
   
     def post(self, request, format=None):
         serializer = ServiceSerializer(data=request.data)

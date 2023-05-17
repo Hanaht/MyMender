@@ -48,6 +48,7 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=False)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
 
     objects = UserManager()
