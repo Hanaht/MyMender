@@ -43,11 +43,11 @@ class BidWinner(generics.GenericAPIView):
         
         
     def get(self, request):
+        
         winnerByPrice = Commpetition.objects.order_by('-final_price')[0]
         winnerByExperiance=Commpetition.objects.order_by('-numberOfExperience')
         serializer = self.serializer_class()
         # print(winner.title)
-        
         
         return Response({
             "status": "success",

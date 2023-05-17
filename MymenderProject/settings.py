@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'announcement',
     'service',
     'notification',
+    'Form',
     
 ]
 

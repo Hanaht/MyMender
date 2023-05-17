@@ -8,6 +8,9 @@ urlpatterns =[
     path('announce/', include('announcement.urls')),
     path('auth/', include('Auth.urls')),
     path('api/Service/', include('service.urls')),
+    path('api/Notification/', include('notification.urls')),
+    path('api/form/', include('Form.urls')),
+
 
 ]
 

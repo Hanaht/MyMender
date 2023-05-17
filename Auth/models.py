@@ -5,7 +5,6 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
     def create_user(self, identification_number, first_name,last_name, email, password=None):
-        
         if not identification_number:
             raise ValueError('Users must have an identification_number')
 
@@ -38,8 +37,7 @@ class User(AbstractBaseUser):
     ID = models.AutoField(primary_key=True)
     email = models.EmailField(
         verbose_name='email address',
-        max_length=255,
-    )
+        max_length=255,)
     identification_number=models.BigIntegerField(unique=True,)
     first_name = models.CharField(max_length=500, blank=False, null=False)
     last_name = models.CharField(max_length=500, blank=False, null=False)
@@ -50,12 +48,9 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
-
     objects = UserManager()
-
     USERNAME_FIELD = 'identification_number'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
-
     def __str__(self):
         return str(self.identification_number)
     def has_perm(self, perm, object=None):
@@ -80,6 +75,7 @@ class department(models.Model):
 class customer(models.Model):
     ID= models.AutoField(primary_key=True)
     user_ID = models.ForeignKey("User",to_field='identification_number', on_delete=models.CASCADE)
+    
     date_created=models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
         return str(self.user_ID)

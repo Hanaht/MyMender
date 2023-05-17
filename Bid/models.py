@@ -4,6 +4,7 @@ class BidCatagory(models.Model):
     id = models.AutoField(primary_key=True)
     catagoryName=models.TextField(max_length=200)
     status=models.BooleanField()
+    
 class Commpetition(models.Model):
     id = models.AutoField(primary_key=True)
     bid_id = models.ForeignKey("Bid",to_field='id', on_delete=models.CASCADE,null=True)
@@ -17,6 +18,7 @@ class Commpetition(models.Model):
             null=True,
             blank=True,
             related_name="customer_Id",)
+    
 class Bid(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.TextField(max_length=200, blank=True)
