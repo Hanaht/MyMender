@@ -108,7 +108,7 @@ class departmentSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.Serializer):
     identification_number = serializers.IntegerField(required=True)
-    password = serializers.CharField(required=False, allow_null=True, write_only=True)
+    password = serializers.CharField(style={'input_type': 'password'},required=False, allow_null=True, write_only=True)
 
     def validate(self, attrs):
         identification_number = attrs.get('identification_number')
@@ -122,7 +122,7 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class UserLogoutSerializer(serializers.Serializer):
-    phone_number = serializers.CharField(max_length=11, required=True)
+    # phone_number = serializers.CharField(max_length=11, required=True)
 
     def validate(self, attrs):
         identification_number = attrs.get('identification_number')
