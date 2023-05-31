@@ -1,12 +1,17 @@
 from rest_framework import serializers
 from .models import Bid
+from .models import Commpetition
 
-
-class BidSerializer(serializers.ModelSerializer):
+class BidInitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
-        fields = ('title','price')
-class CreateBidSerializer(serializers.ModelSerializer):
+        fields = ('title','description','initial_price','minimum_numberOfExperience')
+class BidCommpSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Bid
-        fields = ('title','price','description','initial_price','end_time','start_time','winner','final_price','numberOfExperience',)
+        model = Commpetition
+        fields = ('title','final_price','numberOfExperience',)
+class BidWinnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Commpetition
+        fields = ('bid_id','customer_id')
+
