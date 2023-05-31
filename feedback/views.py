@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from .serializer import FeedbackSerializer
+from .serializer import FeedbackSerializer,FeedbackSeASerializer
 from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import Feedback
+from rest_framework import filters
+
 class CreateFeedback(generics.GenericAPIView):
     serializer_class = FeedbackSerializer
     queryset = Feedback.objects.all()
@@ -15,6 +17,12 @@ class CreateFeedback(generics.GenericAPIView):
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class User_filter(generics.ListCreateAPIView):
+    search_fields = ['title']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSeASerializer
 
 
 

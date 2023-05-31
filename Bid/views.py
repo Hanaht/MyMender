@@ -39,11 +39,7 @@ def testing(request):
 class BidWinner(generics.GenericAPIView):
     serializer_class = BidWinnerSerializer
     queryset = Commpetition.objects.all()
-    # def post(self,request):
-        
-        
     def get(self, request):
-        
         winnerByPrice = Commpetition.objects.order_by('-final_price')[0]
         winnerByExperiance=Commpetition.objects.order_by('-numberOfExperience')
         serializer = self.serializer_class()

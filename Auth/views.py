@@ -5,7 +5,15 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
 from .models import User, admin, department
-from .serializers import UserSerializer, AdminSerializer, departmentSerializer
+from .serializers import UserSerializer, AdminSerializer, departmentSerializer,UserSerializer1
+from rest_framework import filters
+class User_filter(generics.ListCreateAPIView):
+    search_fields = ['first_name']
+    filter_backends = (filters.SearchFilter,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer1
+
+
 
 class user_list(APIView):
     serializer_class=UserSerializer
