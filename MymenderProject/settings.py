@@ -23,14 +23,12 @@ INSTALLED_APPS = [
     'Bid',
     'feedback',
     'announcement',
-<<<<<<< HEAD
+    'Form',
     'services',
-    'appointment'
-=======
+    'appointment',
     'service',
     'notification',
     
->>>>>>> 8a7f477 (form generator)
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

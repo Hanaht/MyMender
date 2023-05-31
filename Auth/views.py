@@ -14,8 +14,14 @@ from django.contrib.auth import authenticate,login,logout
 from rest_framework.views import APIView
 from .models import User, admin, department
 from MymenderProject.decorators import admin_only, customer_required, superuser_required
-from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
+from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer,UserSerializer1
 from services import urls as url
+from rest_framework import filters
+class User_filter(generics.ListCreateAPIView):
+    search_fields = ['first_name']
+    filter_backends = (filters.SearchFilter,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer1
 
 class user_list(APIView):
     serializer_class=UserSerializer
