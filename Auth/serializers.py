@@ -3,7 +3,10 @@ from django.contrib.auth import authenticate
 
 from MymenderProject.decorators import customer_required
 from .models import User, admin, department
-
+class UserSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
