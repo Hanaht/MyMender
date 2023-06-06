@@ -16,18 +16,13 @@ from .models import User, admin, department
 from MymenderProject.decorators import admin_only, customer_required, superuser_required
 from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer,UserSerializer1
 from services import urls as url
-from rest_framework import filters
-class User_filter(generics.ListCreateAPIView):
-    search_fields = ['first_name']
-    filter_backends = (filters.SearchFilter,)
-    queryset = User.objects.all()
-    serializer_class = UserSerializer1
+from appointment import models as appo
 
 class user_list(APIView):
     serializer_class=UserSerializer
     
     def get(self, request, format=None):
-        account =User.objects.all()
+        account =User.objects.filter(is_customer=True).all()
         serializer = UserSerializer(account, many=True)
         return Response(serializer.data)
 
@@ -64,20 +59,12 @@ class register_admin(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class admin_list(APIView):
-    serializer_class=AdminSerializer
+    serializer_class=UserSerializer
     
     def get(self, request, format=None):
-        admins =admin.objects.all()
-        serializer = AdminSerializer(admins, many=True)
+        account =User.objects.filter(is_admin=True).all()
+        serializer = UserSerializer(account, many=True)
         return Response(serializer.data)
-  
-    def post(self, request, format=None):
-        serializer = AdminSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,
-                            status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #@admin_only
 class dep(APIView):
@@ -110,7 +97,8 @@ class UserLoginView(APIView):
                     if user.is_customer==True:
                         login(request, user)
                         user.save()
-                        return redirect("../../services/service_list")
+                        return Response({'sucessfully logged'})
+                        # return redirect("../../services/service_list")
                     #return Response(ser_data.data, status=status.HTTP_200_OK)
                     if user.is_admin==True:
                         login(request, user)
@@ -133,3 +121,19 @@ class UserLogoutView(APIView):
                 return Response(ser_data.data, status=status.HTTP_200_OK)
             return Response({'detail': 'user does not exists'})
         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class admin_dashboard(APIView):
+    def get(self,request):
+        user=User.objects.all()
+        # app_model=appo.appointment 
+        app=appo.appointment.objects.all()
+
+        total_user=user.filter(is_customer=True).count()
+        total_appointment=app.count()
+        # delivered= order.filter(status='delivered').count()
+        pending= app.filter(pending=True).count()
+        approved= app.filter(status=True).count()
+        declined= app.filter(status=False).count()
+        context={'users':user,'apps':app,'total_user':total_user,'total_appointment':total_appointment,pending:'pending',approved:'approved',declined:'declined'}
+        return render(request, 'admin_dashboard.html',context)

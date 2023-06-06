@@ -17,12 +17,7 @@ class Service_list(APIView):
 
 class Record_Service(APIView):
     serializer_class=ServiceSerializer
-    
-    def get(self, request, format=None):
-        service = services.objects.all()
-        serializer = ServiceSerializer(service, many=True)
-        return Response(serializer.data)
-  
+
     def post(self, request, format=None):
         serializer = ServiceSerializer(data=request.data)
         if serializer.is_valid():
@@ -39,7 +34,8 @@ class Requirment_list(APIView):
         requirments = general_requirment.objects.all()
         serializer = RequirmentSerializer( requirments, many=True)
         return Response(serializer.data)
-  
+class Requirment_record(APIView):
+    serializer_class=RequirmentSerializer
     def post(self, request, format=None):
         serializer = RequirmentSerializer(data=request.data)
         if serializer.is_valid():
