@@ -7,7 +7,8 @@ from django.shortcuts import redirect, render
 from django.http import Http404
 from rest_framework.views import APIView
 from .models import appointment
-from .serializers import appSerializer
+from .serializers import appSerializer,appointmentStatus
+from rest_framework import filters
 
 # class schedule_app(APIView):
 #     serializer_class=appSerializer
@@ -74,3 +75,8 @@ class all_app(APIView):
         app=appointment.objects.all()
         return render(request,{'appointments':app})
 
+class Appointment_filter(generics.ListCreateAPIView):
+    search_fields = ['ApprovalStatus']
+    filter_backends = (filters.SearchFilter,)
+    queryset = appointment.objects.all().filter(ApprovalStatus="pending")
+    serializer_class = appointmentStatus

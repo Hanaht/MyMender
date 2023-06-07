@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate,login,logout
 from rest_framework.views import APIView
 from .models import User, admin, department
 from MymenderProject.decorators import admin_only, customer_required, superuser_required
-from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
+from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer,UserSerializer1
 from services import urls as url
 from appointment import models as appo
 

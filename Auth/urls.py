@@ -7,7 +7,7 @@ urlpatterns = [
      #path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
      path('register_user/',register_user.as_view()),
      path('register_admin/',register_admin.as_view()),
-     path('admin_list/',admin_list.as_view()),
+     path('adUser_filtermin_list/',admin_list.as_view()),
      path('dep/',dep.as_view(),name="dep"),
      
      path('login/', UserLoginView.as_view()),
