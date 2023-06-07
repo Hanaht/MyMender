@@ -40,7 +40,7 @@ class User(AbstractBaseUser):
         verbose_name='email address',
         max_length=255,
     )
-    identification_number=models.BigIntegerField(unique=True,)
+    identification_number=models.CharField(max_length=255,unique=True,)
     first_name = models.CharField(max_length=500, blank=False, null=False)
     last_name = models.CharField(max_length=500, blank=False, null=False)
     password= models.CharField(max_length=500, blank=False, null=False)
@@ -74,8 +74,9 @@ class admin(models.Model):
 
 class customer(models.Model):
     ID= models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     #user_ID = models.ForeignKey(User, to_field='identification_number',on_delete=models.CASCADE)
-    user_ID = models.ForeignKey("User",to_field='identification_number', on_delete=models.CASCADE)
+    # user_ID = models.ForeignKey("User",to_field='identification_number', on_delete=models.CASCADE)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
