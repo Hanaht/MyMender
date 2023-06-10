@@ -10,7 +10,7 @@ urlpatterns = [
      path('adUser_filtermin_list/',admin_list.as_view()),
      path('dep/',dep.as_view(),name="dep"),
      
-     path('login/', UserLoginView.as_view()),
+     path('login/', UserLoginView.as_view(),name="login"),
      path('logout/', UserLogoutView.as_view()),
      # path('logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
      # path('logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),

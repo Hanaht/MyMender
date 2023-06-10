@@ -9,11 +9,6 @@ from .serializers import announceSerializer
 
 class announce(APIView):
     serializer_class=announceSerializer
-    
-    def get(self, request, format=None):
-        announce = announcement.objects.all()
-        serializer = announceSerializer(announce, many=True)
-        return Response(serializer.data)
   
     def post(self, request, format=None):
         serializer = announceSerializer(data=request.data)

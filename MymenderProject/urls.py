@@ -11,7 +11,7 @@ urlpatterns =[
     path('api/app/', include('appointment.urls')),
     path('announce/', include('announcement.urls')),
     path('auth/', include('Auth.urls')),
-    path('api/Service/', include('service.urls')),
+    # path('api/Service/', include('service.urls')),
 
 ]
 

@@ -1,4 +1,6 @@
-from datetime import timezone
+# from datetime import timezone
+from django.utils import timezone
+from datetime import *
 from pyexpat.errors import messages
 from rest_framework import generics
 from rest_framework.response import Response
@@ -6,55 +8,39 @@ from rest_framework import status
 from django.shortcuts import redirect, render
 from django.http import Http404
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
+from Auth import models as auth_model
 from .models import appointment
 from .serializers import appSerializer,appointmentStatus
 from rest_framework import filters
-
-# class schedule_app(APIView):
-#     serializer_class=appSerializer
-    
-#     def get(self, request, format=None):
-#         app = appointment.objects.all()
-#         serializer = appSerializer(app, many=True)
-#         return Response(serializer.data)
-  
-#     def post(self, request, format=None):
-#         serializer = appSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,
-#                             status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-
+from Auth.views import UserLoginView
+from django.contrib.auth.decorators import login_required
 
 class schedule_app(APIView):
     serializer_class=appSerializer
-
     def post(self, request, format=None): 
         app_form = appSerializer(data=request.data)
+        # data = ser_data.validated_data
 
         if app_form.is_valid():  
-            app_date = app_form.cleaned_data.get('app_date')  
-            dep_id=app_form.cleaned_data.get('dep_ID')  
-            if timezone.now().date() < app_date:  
-                if appointment.objects.filter(app_date=app_date, dep_ID=dep_id).count()<=50:
-                    app_form.save()
-                    # app.save()
-                    messages.add_message(request, messages.INFO, 'Your appointment is received and pending.')
-                    return Response(app_form.data,
-                             status=status.HTTP_201_CREATED)
+            data = app_form.validated_data
+            app_date=data['app_date']
+            # dep_ID=data['dep_ID'] 
+            if datetime.now().date() < app_date: 
+                count_app=appointment.objects.filter(app_date=data['app_date'], dep_ID=data['dep_ID']).count()
+                if count_app<=50:                   
+                    app_form.save(request)
+                    return Response({'Your appointment is received and pending.'})
                 else:
-                    app_form.add_error('app_date',  'appointment date is full!!!')
+                    return Response({'appointment date is full!!!'})
             else:
-                app_form.add_error('app_date', 'Invalid date.')
+                return Response({'Invalid date.'})
         return Response(app_form.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class approve_app(APIView):
     def post(request, pk):
             appoint = appointment.objects.get(id=pk)
-            appoint.status = True  # approve appointment
+            appoint.status = "approved"  # approve appointment
             appoint.pending=False
             appoint.save()
 
@@ -64,7 +50,7 @@ class approve_app(APIView):
 class decline_app(APIView):
     def decline_app(request, pk):
             appoint = appointment.objects.get(id=pk)
-            appoint.status = False  # decline appointment
+            appoint.status = "declined"  # decline appointment
             appoint.pending=False
             appoint.save()
 
