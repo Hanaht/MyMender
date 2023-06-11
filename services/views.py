@@ -34,6 +34,7 @@ class Requirment_list(APIView):
         requirments = general_requirment.objects.all()
         serializer = RequirmentSerializer( requirments, many=True)
         return Response(serializer.data)
+    
 class Requirment_record(APIView):
     serializer_class=RequirmentSerializer
     def post(self, request, format=None):
@@ -44,23 +45,16 @@ class Requirment_record(APIView):
                             status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
-# class Adminservices_list(APIView):
-#     serializer_class=Admmin_serviceSerializer
-    
-#     def get(self, request, format=None):
-#         admin_serve = admin_services.objects.all()
-#         serializer = Admmin_serviceSerializer( admin_serve, many=True)
-#         return Response(serializer.data)
-  
-#     def post(self, request, format=None):
-#         serializer = Admmin_serviceSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,
-#                             status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
 
 
-
+class AddService(generics.GenericAPIView):
+    serializer_class = ServiceSerializer
+    queryset = services.objects.all()
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "success", "Feedback": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -55,4 +55,6 @@ class BidWinner(generics.GenericAPIView):
             "winner_id":winnerByPrice.winner_id,
             "bid_id":winnerByPrice.bid_id,
         })
-    
+
+
+
