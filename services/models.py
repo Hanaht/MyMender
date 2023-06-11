@@ -6,7 +6,7 @@ class services(models.Model):
     ID= models.AutoField(primary_key=True)
     name=models.CharField(max_length=500, null=True)
     dep_ID = models.ForeignKey(auth_model.department, on_delete=models.CASCADE)
-    admin_ID=models.ManyToManyField(auth_model.admin)
+    # admin_ID=models.ManyToManyField(auth_model.admin)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
         return str(self.name)

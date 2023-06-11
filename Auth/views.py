@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from pyexpat.errors import messages
 #from rest_auth.views import LoginView as RestLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
@@ -14,7 +15,7 @@ from django.contrib.auth import authenticate,login,logout
 from rest_framework.views import APIView
 from .models import User, admin, department
 from MymenderProject.decorators import admin_only, customer_required, superuser_required
-from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer,UserSerializer1
+from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
 from services import urls as url
 from appointment import models as appo
 
@@ -103,7 +104,8 @@ class UserLoginView(APIView):
                     if user.is_admin==True:
                         login(request, user)
                         user.save()
-                        return redirect("user_list")
+                        messages.add_message(request, messages.INFO, 'sucessfully logged')
+                        # return redirect("user_list")
                     
                 return Response({'detail': 'inter password'})
             return Response({'detail': 'user does not exists'})

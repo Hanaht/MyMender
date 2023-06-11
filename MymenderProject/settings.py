@@ -1,10 +1,10 @@
 from pathlib import Path
 from decouple import config
 from django.urls import reverse_lazy
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+# load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = 'django-insecure-qg!qxn=7u9x^xepmuix@hlh_u(5n72nx2vin5wkq$#$-+ap)^c'
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'Form',
     'services',
     'appointment',
-    'service',
     'notification',
     
 ]
@@ -150,6 +149,9 @@ REST_AUTH_SERIALIZERS = {
 }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': (
