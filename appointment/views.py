@@ -10,24 +10,6 @@ from .models import appointment
 from .serializers import appSerializer,appointmentStatus
 from rest_framework import filters
 
-# class schedule_app(APIView):
-#     serializer_class=appSerializer
-    
-#     def get(self, request, format=None):
-#         app = appointment.objects.all()
-#         serializer = appSerializer(app, many=True)
-#         return Response(serializer.data)
-  
-#     def post(self, request, format=None):
-#         serializer = appSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,
-#                             status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-
 
 class schedule_app(APIView):
     serializer_class=appSerializer
@@ -80,3 +62,4 @@ class Appointment_filter(generics.ListCreateAPIView):
     filter_backends = (filters.SearchFilter,)
     queryset = appointment.objects.all().filter(ApprovalStatus="pending")
     serializer_class = appointmentStatus
+
