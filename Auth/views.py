@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from pyexpat.errors import messages
 #from rest_auth.views import LoginView as RestLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
@@ -113,7 +114,8 @@ class UserLoginView(APIView):
                     if user.is_admin==True:
                         login(request, user)
                         user.save()
-                        return redirect("user_list")
+                        messages.add_message(request, messages.INFO, 'sucessfully logged')
+                        # return redirect("user_list")
                     
                 return Response({'detail': 'inter password'})
             return Response({'detail': 'user does not exists'})
