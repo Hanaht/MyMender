@@ -26,9 +26,17 @@ INSTALLED_APPS = [
     'Form',
     'services',
     'appointment',
+<<<<<<< HEAD
+    # 'service',
+=======
+>>>>>>> 4df90241102e9c6cb9bc6d71c8111fcde98433bf
     'notification',
+    'rest_framework_roles',
     
 ]
+REST_FRAMEWORK_ROLES = {
+  'ROLES': 'MymenderProject.roles.ROLES',
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [

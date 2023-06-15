@@ -15,7 +15,6 @@ from .serializers import appSerializer,appointmentStatus
 from rest_framework import filters
 from Auth.views import UserLoginView
 from django.contrib.auth.decorators import login_required
-
 class schedule_app(APIView):
     serializer_class=appSerializer
     def post(self, request, format=None): 
@@ -66,8 +65,9 @@ class Appointment_filter(generics.ListCreateAPIView):
     filter_backends = (filters.SearchFilter,)
     queryset = appointment.objects.all().filter(ApprovalStatus="pending")
     serializer_class = appointmentStatus
-class Appointment_filter(generics.ListCreateAPIView):
+
+class Appointment_filter_approved(generics.ListCreateAPIView):
     search_fields = ['ApprovalStatus']
     filter_backends = (filters.SearchFilter,)
-    queryset = appointment.objects.all().filter(ApprovalStatus="approved")
+    queryset = appointment.objects.all().filter(ApprovalStatus="pending")
     serializer_class = appointmentStatus

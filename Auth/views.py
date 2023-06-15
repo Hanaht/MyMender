@@ -18,15 +18,25 @@ from MymenderProject.decorators import admin_only, customer_required, superuser_
 from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
 from services import urls as url
 from appointment import models as appo
+# from rest_framework.viewsets import ModelViewSet
+# from rest_framework.decorators import action
+# from rest_framework_roles.granting import is_self
+from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+
+
 
 class user_list(APIView):
     serializer_class=UserSerializer
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[IsAuthenticated] 
     
     def get(self, request, format=None):
         account =User.objects.filter(is_customer=True).all()
         serializer = UserSerializer(account, many=True)
         return Response(serializer.data)
-
+ 
 class register_user(APIView):
     serializer_class=RegistrationSerializer
     
@@ -144,3 +154,22 @@ class admin_dashboard(APIView):
         declined= app.filter(status=False).count()
         context={'users':user,'apps':app,'total_user':total_user,'total_appointment':total_appointment,pending:'pending',approved:'approved',declined:'declined'}
         return render(request, 'admin_dashboard.html',context)
+
+
+
+# class UserViewSet(ModelViewSet):
+#     serializer_class = UserSerializer
+#     queryset = User.objects.all()
+
+#     # you can define permissions at the view level
+#     view_permissions = {
+#         'create': {'anon': True},  # only anonymous visitors allowed
+#         'list': {'admin': True}, 
+#         'retrieve,me': {'user': is_self},
+#         'update,update_partial': {'user': is_self, 'admin': True},
+#     }
+
+#     @action(detail=False, methods=['get'])
+#     def me(self, request):
+#         self.kwargs['pk'] = request.user.pk
+#         return self.retrieve(request)
