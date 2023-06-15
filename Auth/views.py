@@ -10,7 +10,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken, TokenAuthentication
 from rest_framework import status
 from django.shortcuts import render
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from rest_framework.views import APIView
 from .models import User, admin, department
@@ -87,6 +87,7 @@ class dep(APIView):
 
 class UserLoginView(APIView):
     serializer_class=UserLoginSerializer
+    
     def post(self, request):
         ser_data =UserLoginSerializer(data=request.POST)
         if ser_data.is_valid():
@@ -98,15 +99,19 @@ class UserLoginView(APIView):
                     if user.is_customer==True:
                         login(request, user)
                         user.save()
-                        return Response({'sucessfully logged'})
-                        # return redirect("../../services/service_list")
+                        # response
+                        # return Response({'sucessfully logged'})
+                        
+                        return redirect("../../services/service_list")
                     #return Response(ser_data.data, status=status.HTTP_200_OK)
                     if user.is_admin==True:
                         login(request, user)
                         user.save()
                         messages.add_message(request, messages.INFO, 'sucessfully logged')
-                        # return redirect("user_list")
-                    
+                        # redirect("user_list")
+                    response=HttpResponse()
+                    csrf_token=response.get('X-CSRFToken')
+                    return response
                 return Response({'detail': 'inter password'})
             return Response({'detail': 'user does not exists'})
         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)

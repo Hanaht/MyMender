@@ -28,7 +28,7 @@ class schedule_app(APIView):
             # dep_ID=data['dep_ID'] 
             if datetime.now().date() < app_date: 
                 count_app=appointment.objects.filter(app_date=data['app_date'], dep_ID=data['dep_ID']).count()
-                if count_app<=50:                   
+                if count_app<=5:                   
                     app_form.save(request)
                     return Response({'Your appointment is received and pending.'})
                 else:
@@ -41,7 +41,7 @@ class approve_app(APIView):
     def post(request, pk):
             appoint = appointment.objects.get(id=pk)
             appoint.status = "approved"  # approve appointment
-            appoint.pending=False
+            # appoint.pending=False
             appoint.save()
 
             messages.success(request, "Appointment approved successfully.")
@@ -51,7 +51,7 @@ class decline_app(APIView):
     def decline_app(request, pk):
             appoint = appointment.objects.get(id=pk)
             appoint.status = "declined"  # decline appointment
-            appoint.pending=False
+            # appoint.pending=False
             appoint.save()
 
             messages.success(request, "Appointment declined successfully.")
@@ -65,4 +65,9 @@ class Appointment_filter(generics.ListCreateAPIView):
     search_fields = ['ApprovalStatus']
     filter_backends = (filters.SearchFilter,)
     queryset = appointment.objects.all().filter(ApprovalStatus="pending")
+    serializer_class = appointmentStatus
+class Appointment_filter(generics.ListCreateAPIView):
+    search_fields = ['ApprovalStatus']
+    filter_backends = (filters.SearchFilter,)
+    queryset = appointment.objects.all().filter(ApprovalStatus="approved")
     serializer_class = appointmentStatus
