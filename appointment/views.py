@@ -13,13 +13,8 @@ from Auth import models as auth_model
 from .models import appointment
 from .serializers import appSerializer,appointmentStatus
 from rest_framework import filters
-<<<<<<< HEAD
-
-=======
 from Auth.views import UserLoginView
 from django.contrib.auth.decorators import login_required
->>>>>>> 4df90241102e9c6cb9bc6d71c8111fcde98433bf
-
 class schedule_app(APIView):
     serializer_class=appSerializer
     def post(self, request, format=None): 
@@ -32,7 +27,7 @@ class schedule_app(APIView):
             # dep_ID=data['dep_ID'] 
             if datetime.now().date() < app_date: 
                 count_app=appointment.objects.filter(app_date=data['app_date'], dep_ID=data['dep_ID']).count()
-                if count_app<=50:                   
+                if count_app<=5:                   
                     app_form.save(request)
                     return Response({'Your appointment is received and pending.'})
                 else:
@@ -45,7 +40,7 @@ class approve_app(APIView):
     def post(request, pk):
             appoint = appointment.objects.get(id=pk)
             appoint.status = "approved"  # approve appointment
-            appoint.pending=False
+            # appoint.pending=False
             appoint.save()
 
             messages.success(request, "Appointment approved successfully.")
@@ -55,7 +50,7 @@ class decline_app(APIView):
     def decline_app(request, pk):
             appoint = appointment.objects.get(id=pk)
             appoint.status = "declined"  # decline appointment
-            appoint.pending=False
+            # appoint.pending=False
             appoint.save()
 
             messages.success(request, "Appointment declined successfully.")
@@ -71,3 +66,8 @@ class Appointment_filter(generics.ListCreateAPIView):
     queryset = appointment.objects.all().filter(ApprovalStatus="pending")
     serializer_class = appointmentStatus
 
+class Appointment_filter_approved(generics.ListCreateAPIView):
+    search_fields = ['ApprovalStatus']
+    filter_backends = (filters.SearchFilter,)
+    queryset = appointment.objects.all().filter(ApprovalStatus="pending")
+    serializer_class = appointmentStatus
