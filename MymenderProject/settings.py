@@ -26,12 +26,8 @@ INSTALLED_APPS = [
     'Form',
     'services',
     'appointment',
-<<<<<<< HEAD
-    # 'service',
-=======
->>>>>>> 4df90241102e9c6cb9bc6d71c8111fcde98433bf
     'notification',
-    'rest_framework_roles',
+    # 'rest_framework_roles',
     
 ]
 REST_FRAMEWORK_ROLES = {
@@ -179,3 +175,19 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='Auth.User'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = ''
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = ''
+
+EMAIL_HOST_PASSWORD = ''
+TWILIO_ACCOUNT_SID = 'ACae9c661cbd5ea9e61a23503c0b244db9'
+TWILIO_AUTH_TOKEN = 'edc7c2561b3c9b46b51ad6536a784389'
+
+# account_sid = os.environ['ACae9c661cbd5ea9e61a23503c0b244db9']
+# auth_token = os.environ['edc7c2561b3c9b46b51ad6536a784389']

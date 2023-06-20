@@ -18,9 +18,6 @@ from MymenderProject.decorators import admin_only, customer_required, superuser_
 from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
 from services import urls as url
 from appointment import models as appo
-# from rest_framework.viewsets import ModelViewSet
-# from rest_framework.decorators import action
-# from rest_framework_roles.granting import is_self
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -30,7 +27,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 class user_list(APIView):
     serializer_class=UserSerializer
     authentication_classes=[SessionAuthentication]
-    permission_classes=[IsAuthenticated] 
+    permission_classes=[IsAdminUser] 
     
     def get(self, request, format=None):
         account =User.objects.filter(is_customer=True).all()
@@ -39,7 +36,10 @@ class user_list(APIView):
  
 class register_user(APIView):
     serializer_class=RegistrationSerializer
-    
+    authentication_classes=[SessionAuthentication]
+
+    permission_classes=[AllowAny] 
+
     def get(self, request, format=None):
         account =User.objects.all()
         serializer = UserSerializer(account, many=True)
@@ -55,11 +55,8 @@ class register_user(APIView):
 
 class register_admin(APIView):
     serializer_class=RegisteradminSerializer
-    
-    # def get(self, request, format=None):
-    #     account =User.objects.all()
-    #     serializer = UserSerializer(account, many=True)
-    #     return Response(serializer.data)
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[AllowAny]     
     
     def post(self, request, format=None):
         serializer = RegisteradminSerializer(data=request.data)
@@ -71,7 +68,9 @@ class register_admin(APIView):
 
 class admin_list(APIView):
     serializer_class=UserSerializer
-    
+    authentication_classes=[SessionAuthentication]
+
+    permission_classes=[AllowAny] 
     def get(self, request, format=None):
         account =User.objects.filter(is_admin=True).all()
         serializer = UserSerializer(account, many=True)
@@ -136,6 +135,8 @@ class UserLogoutView(APIView):
     
 
 class admin_dashboard(APIView):
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[AllowAny] 
     def get(self,request):
         user=User.objects.all()
         # app_model=appo.appointment 

@@ -13,12 +13,9 @@ from Auth import models as auth_model
 from .models import appointment
 from .serializers import appSerializer,appointmentStatus
 from rest_framework import filters
-<<<<<<< HEAD
 
-=======
 from Auth.views import UserLoginView
 from django.contrib.auth.decorators import login_required
->>>>>>> 4df90241102e9c6cb9bc6d71c8111fcde98433bf
 
 class schedule_app(APIView):
     serializer_class=appSerializer
