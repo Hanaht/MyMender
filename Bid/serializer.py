@@ -5,11 +5,11 @@ from .models import Commpetition
 class BidInitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
-        fields = ('title','description','initial_price','minimum_numberOfExperience')
+        fields = ('title','description','initial_price')
 class BidCommpSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commpetition
-        fields = ('title','final_price','numberOfExperience',)
+        fields = ('final_price',)
 class BidWinnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commpetition
