@@ -17,6 +17,7 @@ class Commpetition(models.Model):
     #         null=True,
     #         blank=True,
     #         related_name="customer_Id",)
+
 class Bid(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.TextField(max_length=200, blank=True)

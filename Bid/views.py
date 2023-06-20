@@ -4,6 +4,8 @@ from .serializer import BidInitSerializer,BidCommpSerializer,BidWinnerSerializer
 from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import Bid
+from rest_framework.views import APIView
+
 from .models import Commpetition
 import datetime
 from django.http import HttpResponse
@@ -54,3 +56,10 @@ class BidWinner(generics.GenericAPIView):
 
 
 
+
+class Bid_list(APIView):
+    serializer_class=BidInitSerializer
+    def get(self, request, format=None):
+        bid = BidCommpitionInfo.objects.all()
+        serializer = BidCommpSerializer( bid, many=True)
+        return Response(serializer.data)
