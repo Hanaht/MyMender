@@ -60,6 +60,16 @@ class BidWinner(generics.GenericAPIView):
 class Bid_list(APIView):
     serializer_class=BidInitSerializer
     def get(self, request, format=None):
-        bid = BidCommpitionInfo.objects.all()
-        serializer = BidCommpSerializer( bid, many=True)
+        bid = Bid.objects.all()
+        serializer = BidInitSerializer( bid, many=True)
         return Response(serializer.data)
+
+
+class FindByBidID(generics.ListCreateAPIView):
+   serializer_class = BidInitSerializer
+   filter_class = Bid_list
+   paginate_by = 100
+
+   def get_queryset(self):
+      queryset = Bid.objects.filter(pk=self.kwargs['post_id'])
+      return queryset

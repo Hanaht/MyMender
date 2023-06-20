@@ -25,7 +25,7 @@ class Bid(models.Model):
     catagory_id = models.ForeignKey("BidCatagory",to_field='id', null=True, on_delete=models.CASCADE)
     initial_price = models.FloatField()
     start_time = models.DateTimeField(null=True)
-    minimum_numberOfExperience=models.IntegerField()
+    # minimum_numberOfExperience=models.IntegerField()
     created_on = models.DateTimeField(auto_now_add=True)
 
 
