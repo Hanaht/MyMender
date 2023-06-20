@@ -9,7 +9,7 @@ urlpatterns =[
     path('api/auth/', include('Auth.urls')),
     path('api/services/', include('services.urls')),
     path('api/app/', include('appointment.urls')),
-    path('announce/', include('announcement.urls')),
+    path('api/announce/', include('announcement.urls')),
     path('auth/', include('Auth.urls')),
     # path('api/Service/', include('service.urls')),
 
