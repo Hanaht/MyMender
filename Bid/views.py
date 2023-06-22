@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import Bid
 from rest_framework.views import APIView
-
 from .models import Commpetition
 import datetime
 from django.http import HttpResponse
@@ -25,6 +24,8 @@ class BidCommpitionInfo(generics.GenericAPIView):
     def post(self,request):
         serializer1 = self.serializer_class(data=request.data)    
         if serializer1.is_valid():
+            # if request.
+            
             serializer1.save()
             return Response({"status": "success", "Bid": serializer1.data}, status=status.HTTP_201_CREATED)
         else:
@@ -43,7 +44,7 @@ class BidWinner(generics.GenericAPIView):
     queryset = Commpetition.objects.all()
     def get(self, request):
         winnerByPrice = Commpetition.objects.order_by('-final_price')[0]
-        winnerByExperiance=Commpetition.objects.order_by('-numberOfExperience')
+        # winnerByExperiance=Commpetition.objects.order_by('-numberOfExperience')
         serializer = self.serializer_class()
         
         

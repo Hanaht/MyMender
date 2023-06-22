@@ -55,7 +55,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=False)
-    groups = models.ForeignKey("Group",to_field='ID', on_delete=models.CASCADE)
+    # groups = models.ForeignKey("Group",to_field='ID', on_delete=models.CASCADE)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
     objects = UserManager()
 
