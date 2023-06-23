@@ -108,16 +108,11 @@ class UserLoginView(APIView):
             if user:
                 if user.check_password(data['password']):
                     login(request, user)
-                    
                     user.save()
-                    print(str(request.user.ID)+" yseeeeeeeee")
-                    # response=HttpResponse({"message","sucessfully logged",
                     if request.user.is_staff is False:
                         userRole="is_User"
                     else:
                         userRole="isAdmin"
-                    #                       })
-                    # csrf_token=response.get('X-CSRFToken')
                     return Response({'message':"successfully logged in",
                         'user_role':userRole})
                 return Response({'detail': 'inter password'})

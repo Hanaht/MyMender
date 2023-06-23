@@ -3,6 +3,7 @@ from decouple import config
 from django.urls import reverse_lazy
 # from dotenv import load_dotenv
 import os
+from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 # load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = 'django-insecure-qg!qxn=7u9x^xepmuix@hlh_u(5n72nx2vin5wkq$#$-+ap)^c'
@@ -10,7 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 # DATABASES['default'] =  dj_database_url.config()
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -20,6 +21,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'knox',
     'Auth',
+    'rest_framework_simplejwt',
     'Bid',
     'feedback',
     'announcement',
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
     'services',
     'appointment',
     'notification',
+    'django_filters',
     # 'rest_framework_roles',
     
 ]
@@ -151,12 +154,27 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'Accounts.serializers.LoginUserSerializer',
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#     ],
+# }
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
 CSRF_COOKIE_SECURE=True
 CSRF_COOKIE_HTTPONLY=True
 # REST_FRAMEWORK = {
