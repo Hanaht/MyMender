@@ -6,6 +6,7 @@ from .models import Feedback
 from django.conf import settings
 from twilio.rest import Client
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 def send_text():
   client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN )
@@ -15,6 +16,7 @@ def send_text():
       body="Hey I hope you received this message") # insert message
 
 class CreateFeedback(generics.GenericAPIView):
+    
     serializer_class = FeedbackSerializer
     queryset = Feedback.objects.all()
     def post(self, request):
@@ -30,6 +32,8 @@ class CreateFeedback(generics.GenericAPIView):
 
 class FeedBack_list(APIView):
     serializer_class=FeedbackSerializer
+    permission_classes=[IsAuthenticated] 
+
     def get(self, request, format=None):
         feedback = Feedback.objects.all()
         serializer = FeedbackSerializer( feedback, many=True)
