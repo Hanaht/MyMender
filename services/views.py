@@ -5,8 +5,9 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
 from .models import services,general_requirment
-from .serializers import ServiceSerializer,RequirmentSerializer
-
+from .serializers import ServiceSerializer,RequirmentSerializer,UpdateServiceSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated, AllowAny
 class Service_list(APIView):
     serializer_class=ServiceSerializer
     
@@ -58,3 +59,8 @@ class AddService(generics.GenericAPIView):
         else:
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UpdateServiceViewSet(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ServiceSerializer
+    queryset = services.objects.all()
+    
