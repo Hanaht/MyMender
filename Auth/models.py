@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
     
 
 class User(AbstractBaseUser):
-    ID = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -51,10 +51,12 @@ class User(AbstractBaseUser):
     password= models.CharField(max_length=500, blank=False, null=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=False)
     # groups = models.ForeignKey("Groupp",to_field='ID', on_delete=models.CASCADE)
+    # groups = models.ForeignKey("Group",to_field='ID', on_delete=models.CASCADE)
     date_created=models.DateTimeField(auto_now_add=True, null=True)
     objects = UserManager()
 
@@ -76,15 +78,6 @@ class admin(models.Model):
     def __str__(self):
         return str(self.user_ID)
 
-# class customer(models.Model):
-#     ID= models.AutoField(primary_key=True)
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     #user_ID = models.ForeignKey(User, to_field='identification_number',on_delete=models.CASCADE)
-#     # user_ID = models.ForeignKey("User",to_field='identification_number', on_delete=models.CASCADE)
-#     date_created=models.DateTimeField(auto_now_add=True, null=True)
-    
-#     def __str__(self):
-#         return str(self.user_ID)
     
 class department(models.Model):
     ID= models.AutoField(primary_key=True)

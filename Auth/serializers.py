@@ -7,7 +7,7 @@ from .models import User, admin, department,customer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields=['first_name','last_name','email','identification_number','password']
+        fields=['first_name','last_name','email','identification_number','password','is_staff']
 
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,6 +40,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password': 'password doesnot match'})
         account.is_customer=True
         account.set_password(password)
+        account.is_staff=False
         account.save()
         # cust.save()
         return account
@@ -69,6 +70,8 @@ class RegisteradminSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password': 'password doesnot match'})
         account.is_admin=True
         account.set_password(password)
+        account.is_staff=True
+
         account.save()
         return account
 

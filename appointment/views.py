@@ -57,8 +57,6 @@ class schedule_app(APIView):
     serializer_class=appSerializer
     def post(self, request, format=None): 
         app_form = appSerializer(data=request.data)
-        # data = ser_data.validated_data
-
         if app_form.is_valid():  
             data = app_form.validated_data
             app_date=data['app_date']

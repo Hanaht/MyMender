@@ -3,6 +3,7 @@ from decouple import config
 from django.urls import reverse_lazy
 # from dotenv import load_dotenv
 import os
+from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 # load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = 'django-insecure-qg!qxn=7u9x^xepmuix@hlh_u(5n72nx2vin5wkq$#$-+ap)^c'
@@ -10,7 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 # DATABASES['default'] =  dj_database_url.config()
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -20,15 +21,16 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'knox',
     'Auth',
+    'rest_framework_simplejwt',
     'Bid',
     'feedback',
     'announcement',
     'Form',
     'services',
     'appointment',
-    'google_translate',
     # 'service',
     'notification',
+    'django_filters',
     # 'rest_framework_roles',
     
 ]
@@ -183,3 +185,19 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='Auth.User'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = ''
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = ''
+
+EMAIL_HOST_PASSWORD = ''
+TWILIO_ACCOUNT_SID = 'ACae9c661cbd5ea9e61a23503c0b244db9'
+TWILIO_AUTH_TOKEN = 'edc7c2561b3c9b46b51ad6536a784389'
+
+# account_sid = os.environ['ACae9c661cbd5ea9e61a23503c0b244db9']
+# auth_token = os.environ['edc7c2561b3c9b46b51ad6536a784389']

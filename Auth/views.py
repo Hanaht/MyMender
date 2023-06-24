@@ -1,4 +1,6 @@
 import json
+from rest_framework.response import Response
+
 from django.shortcuts import render, redirect
 from django.forms import ValidationError
 from rest_framework import generics
@@ -18,9 +20,6 @@ from MymenderProject.decorators import admin_only, customer_required, superuser_
 from .serializers import RegisteradminSerializer, UserLoginSerializer, UserLogoutSerializer, UserSerializer, AdminSerializer, departmentSerializer,RegistrationSerializer
 from services import urls as url
 from appointment import models as appo
-# from rest_framework.viewsets import ModelViewSet
-# from rest_framework.decorators import action
-# from rest_framework_roles.granting import is_self
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -29,8 +28,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 class user_list(APIView):
     serializer_class=UserSerializer
-    # authentication_classes=[SessionAuthentication]
-    # permission_classes=[IsAuthenticated] 
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[IsAdminUser] 
     
     def get(self, request, format=None):
         account =User.objects.filter(is_customer=True).all()
@@ -49,7 +48,10 @@ class dep_list(APIView):
  
 class register_user(APIView):
     serializer_class=RegistrationSerializer
-    
+    # authentication_classes=[SessionAuthentication]
+
+    # permission_classes=[AllowAny] 
+
     def get(self, request, format=None):
         account =User.objects.all()
         serializer = UserSerializer(account, many=True)
@@ -58,6 +60,7 @@ class register_user(APIView):
     def post(self, request, format=None):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
+            
             serializer.save()
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
@@ -65,11 +68,8 @@ class register_user(APIView):
 
 class register_admin(APIView):
     serializer_class=RegisteradminSerializer
-    
-    # def get(self, request, format=None):
-    #     account =User.objects.all()
-    #     serializer = UserSerializer(account, many=True)
-    #     return Response(serializer.data)
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[AllowAny]     
     
     def post(self, request, format=None):
         serializer = RegisteradminSerializer(data=request.data)
@@ -81,7 +81,9 @@ class register_admin(APIView):
 
 class admin_list(APIView):
     serializer_class=UserSerializer
-    
+    authentication_classes=[SessionAuthentication]
+
+    permission_classes=[AllowAny] 
     def get(self, request, format=None):
         account =User.objects.filter(is_admin=True).all()
         serializer = UserSerializer(account, many=True)
@@ -107,7 +109,6 @@ class dep(APIView):
 
 class UserLoginView(APIView):
     serializer_class=UserLoginSerializer
-    
     def post(self, request):
         ser_data =UserLoginSerializer(data=request.POST)
         if ser_data.is_valid():
@@ -116,22 +117,14 @@ class UserLoginView(APIView):
         
             if user:
                 if user.check_password(data['password']):
-                    if user.is_customer==True:
-                        login(request, user)
-                        user.save()
-                        # response
-                        # return Response({'sucessfully logged'})
-                        
-                        return redirect("../../services/service_list")
-                    #return Response(ser_data.data, status=status.HTTP_200_OK)
-                    if user.is_admin==True:
-                        login(request, user)
-                        user.save()
-                        messages.add_message(request, messages.INFO, 'sucessfully logged')
-                        # redirect("user_list")
-                    response=HttpResponse()
-                    csrf_token=response.get('X-CSRFToken')
-                    return response
+                    login(request, user)
+                    user.save()
+                    if request.user.is_staff is False:
+                        userRole="is_User"
+                    else:
+                        userRole="isAdmin"
+                    return Response({'message':"successfully logged in",
+                        'user_role':userRole})
                 return Response({'detail': 'inter password'})
             return Response({'detail': 'user does not exists'})
         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -151,6 +144,8 @@ class UserLogoutView(APIView):
     
 
 class admin_dashboard(APIView):
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[AllowAny] 
     def get(self,request):
         user=User.objects.all()
         # app_model=appo.appointment 
@@ -164,9 +159,6 @@ class admin_dashboard(APIView):
         declined= app.filter(status=False).count()
         context={'users':user,'apps':app,'total_user':total_user,'total_appointment':total_appointment,pending:'pending',approved:'approved',declined:'declined'}
         return render(request, 'admin_dashboard.html',context)
-
-
-
 # class UserViewSet(ModelViewSet):
 #     serializer_class = UserSerializer
 #     queryset = User.objects.all()
@@ -183,3 +175,21 @@ class admin_dashboard(APIView):
 #     def me(self, request):
 #         self.kwargs['pk'] = request.user.pk
 #         return self.retrieve(request)
+def IsAdmin(self,request):
+    # search_fields = ['is_staff']
+            
+    if self.request.user.is_staff is True:
+        return Response({
+            "is_staff": "True", })
+def IsUser(self,request):
+    # search_fields = ['is_staff']
+    if self.context['request'].user.is_staff is False:
+        return Response({
+            "is_staff": "False", })
+
+# def IsUser(request):
+#     # search_fields = ['is_staff']
+#     if request.session['is_staff'] is False:
+#         return Response({
+#             "is_staff": "False", })
+
