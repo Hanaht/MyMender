@@ -35,6 +35,16 @@ class user_list(APIView):
         account =User.objects.filter(is_customer=True).all()
         serializer = UserSerializer(account, many=True)
         return Response(serializer.data)
+
+class dep_list(APIView):
+    serializer_class=departmentSerializer
+    # authentication_classes=[SessionAuthentication]
+    # permission_classes=[IsAuthenticated] 
+    
+    def get(self, request, format=None):
+        account =department.objects.all()
+        serializer = departmentSerializer(account, many=True)
+        return Response(serializer.data)
  
 class register_user(APIView):
     serializer_class=RegistrationSerializer

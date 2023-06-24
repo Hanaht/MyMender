@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'Form',
     'services',
     'appointment',
+    # 'service',
     'notification',
     'django_filters',
     # 'rest_framework_roles',
@@ -154,29 +155,18 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'Accounts.serializers.LoginUserSerializer',
 }
-
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 #     'DEFAULT_AUTHENTICATION_CLASSES': [
 #         'rest_framework.authentication.SessionAuthentication',
 #     ],
 # }
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-}
 
-SIMPLE_JWT = {
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
-    'ROTATE_REFRESH_TOKENS': True,
-}
 
 CSRF_COOKIE_SECURE=True
 CSRF_COOKIE_HTTPONLY=True
+
+
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': (
 #         'rest_framework.permissions.IsAuthenticated',
