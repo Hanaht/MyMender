@@ -26,12 +26,10 @@ INSTALLED_APPS = [
     'Form',
     'services',
     'appointment',
-<<<<<<< HEAD
+    'google_translate',
     # 'service',
-=======
->>>>>>> 4df90241102e9c6cb9bc6d71c8111fcde98433bf
     'notification',
-    'rest_framework_roles',
+    # 'rest_framework_roles',
     
 ]
 REST_FRAMEWORK_ROLES = {
@@ -155,14 +153,18 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'Accounts.serializers.LoginUserSerializer',
 }
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#     ],
+# }
+
+
 CSRF_COOKIE_SECURE=True
 CSRF_COOKIE_HTTPONLY=True
+
+
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': (
 #         'rest_framework.permissions.IsAuthenticated',

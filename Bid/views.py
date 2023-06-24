@@ -27,6 +27,7 @@ class BidCommpitionInfo(generics.GenericAPIView):
             return Response({"status": "success", "Bid": serializer1.data}, status=status.HTTP_201_CREATED)
         else:
             return Response({"status": "fail", "message": serializer1.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 def testing(request):
   mydata = Bid.objects.values_list('price')
