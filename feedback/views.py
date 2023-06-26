@@ -22,7 +22,7 @@ class CreateFeedback(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            send_text()
+            # send_text()
             serializer.save()
 
             return Response({"status": "success", "Feedback": serializer.data}, status=status.HTTP_201_CREATED)
@@ -33,12 +33,11 @@ class CreateFeedback(generics.GenericAPIView):
 class FeedBack_list(APIView):
     serializer_class=FeedbackSerializer
     permission_classes=[IsAuthenticated] 
-
     def get(self, request, format=None):
         feedback = Feedback.objects.all()
-        serializer = FeedbackSerializer( feedback, many=True)
+        serializer = FeedbackSerializer(feedback,many=True)
         return Response(serializer.data)
-
+# request.user.is_staff,
 
 
 

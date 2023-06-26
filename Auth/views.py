@@ -1,6 +1,10 @@
 import json
 from rest_framework.response import Response
-
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+import jwt
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.forms import ValidationError
 from rest_framework import generics
@@ -9,7 +13,7 @@ from rest_framework.decorators import api_view
 from pyexpat.errors import messages
 #from rest_auth.views import LoginView as RestLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from knox.auth import AuthToken, TokenAuthentication
+# from knox.auth import AuthToken, TokenAuthentication
 from rest_framework import status
 from django.shortcuts import render
 from django.http import Http404, HttpResponse
@@ -38,9 +42,8 @@ class user_list(APIView):
 
 class dep_list(APIView):
     serializer_class=departmentSerializer
-    # authentication_classes=[SessionAuthentication]
-    # permission_classes=[IsAuthenticated] 
-    
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[IsAuthenticated] 
     def get(self, request, format=None):
         account =department.objects.all()
         serializer = departmentSerializer(account, many=True)
@@ -83,7 +86,7 @@ class admin_list(APIView):
     serializer_class=UserSerializer
     authentication_classes=[SessionAuthentication]
 
-    permission_classes=[AllowAny] 
+    permission_classes=[IsAuthenticated] 
     def get(self, request, format=None):
         account =User.objects.filter(is_admin=True).all()
         serializer = UserSerializer(account, many=True)
@@ -107,27 +110,48 @@ class dep(APIView):
                             status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserLoginView(APIView):
-    serializer_class=UserLoginSerializer
-    def post(self, request):
-        ser_data =UserLoginSerializer(data=request.POST)
-        if ser_data.is_valid():
-            data = ser_data.validated_data
-            user = User.objects.get(identification_number=data['identification_number'])
+
+@csrf_exempt
+@require_POST
+def login_view(request):
+    identification_number = request.POST.get('identification_number')
+    password = request.POST.get('password')
+    user = authenticate(request, identification_number=identification_number, password=password)
+
+    if user is not None:
+        token = jwt.encode({'username': password}, 'SECRET_KEY', algorithm='HS256')
+        if user.is_staff is False:
+           userRole="is_User"
+        else:
+            userRole="isAdmin"
+        response = JsonResponse({'message': 'Login successful'
+                                 
+                                 })
+        response.set_cookie('jwt_token', token, httponly=True)
+        return response
+    else:
+        return JsonResponse({'message': 'Invalid credentials'}, status=401)
+# class UserLoginView(APIView):
+#     serializer_class=UserLoginSerializer
+#     def post(self, request):
+#         ser_data =UserLoginSerializer(data=request.POST)
+#         if ser_data.is_valid():
+#             data = ser_data.validated_data
+#             user = User.objects.get(identification_number=data['identification_number'])
         
-            if user:
-                if user.check_password(data['password']):
-                    login(request, user)
-                    user.save()
-                    if request.user.is_staff is False:
-                        userRole="is_User"
-                    else:
-                        userRole="isAdmin"
-                    return Response({'message':"successfully logged in",
-                        'user_role':userRole})
-                return Response({'detail': 'inter password'})
-            return Response({'detail': 'user does not exists'})
-        return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
+#             if user:
+#                 if user.check_password(data['password']):
+#                     login(request, user)
+#                     user.save()
+#                     if request.user.is_staff is False:
+#                         userRole="is_User"
+#                     else:
+#                         userRole="isAdmin"
+#                     return Response({'message':"successfully logged in",
+#                         'user_role':userRole})
+#                 return Response({'detail': 'inter password'})
+#             return Response({'detail': 'user does not exists'})
+#         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogoutView(APIView):
 

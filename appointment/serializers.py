@@ -1,6 +1,10 @@
 from rest_framework import serializers
-from .models import appointment
+from .models import appointment,appointmentID
 from services import models as serv_model
+
+from django.conf import settings
+
+
 
 class appSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +28,47 @@ class appSerializer(serializers.ModelSerializer):
         )
         appo.save()
         return appo
+  
+
+
+
+
+
+
+class appIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = appointmentID
+        fields=['app_date','Full_name','phone',]
+        
+    def save(self,request,*args, **kwargs):
+       
+        appo=appointmentID(
+            service_name=appointmentID.service_name,
+            Full_name=self.validated_data['Full_name'],
+            phone=self.validated_data['phone'],
+            app_date=self.validated_data['app_date'],
+            # customer_ID= request.session['user_id']
+        )
+        appo.save()
+        return appo
+  
+
+
+
+
+
+
+
+
+
+
+class appSerializer1(serializers.ModelSerializer):
     
+    class Meta:
+        model = appointment
+        fields = ('app_date','service_ID',)
+        
+         
 class appointmentStatus(serializers.ModelSerializer):
     class Meta:
         model = appointment

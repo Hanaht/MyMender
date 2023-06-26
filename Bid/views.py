@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializer import BidInitSerializer,BidCommpSerializer,BidWinnerSerializer
+from .serializer import BidInitSerializer,BidCommpSerializer,BidWinnerSerializer,BidClosingSerializer,BidListSer
 # from .serializer import CreateBidSerializer,CreatedSerializer
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -7,7 +7,15 @@ from .models import Bid
 from rest_framework.views import APIView
 from .models import Commpetition
 import datetime
+from pyexpat.errors import messages
+from rest_framework import filters
 from django.http import HttpResponse
+class close(APIView):
+    def post(self,request, pk,format=None):
+            bid = Bid.objects.get(id=pk)
+            bid.status = "closed"  
+            bid.save()
+            return Response({'Bid closed successfully.'})
 class BidInitialization(generics.GenericAPIView):
     serializer_class = BidInitSerializer
     queryset = Bid.objects.all()
@@ -20,25 +28,23 @@ class BidInitialization(generics.GenericAPIView):
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 class BidCommpitionInfo(generics.GenericAPIView):
     serializer_class=BidCommpSerializer
-    queryset = Commpetition.objects.all()
-    def post(self,request):
-        serializer1 = self.serializer_class(data=request.data)    
+    # queryset = Commpetition.objects.all()
+    def post(self,request,format=None):
+        serializer1 = BidCommpSerializer(data=request.data)  
         if serializer1.is_valid():
-            # if request.
-            
-            serializer1.save()
+            data = serializer1.validated_data
+            final_price=data['final_price']
+
+            serializer1.save(request)
             return Response({"status": "success", "Bid": serializer1.data}, status=status.HTTP_201_CREATED)
         else:
-            return Response({"status": "fail", "message": serializer1.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "closed", "message": serializer1.errors}, status=status.HTTP_400_BAD_REQUEST)
         
-
-def testing(request):
-  mydata = Bid.objects.values_list('price')
-  context = {
-    'price': mydata, 
-  }
-
-  return HttpResponse(context, request)
+class Bid_filter(generics.ListCreateAPIView):
+    search_fields = ['status']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Bid.objects.all().filter(status="active")
+    serializer_class = status
 
 class BidWinner(generics.GenericAPIView):
     serializer_class = BidWinnerSerializer
@@ -47,7 +53,6 @@ class BidWinner(generics.GenericAPIView):
         winnerByPrice = Commpetition.objects.order_by('-final_price')[0]
         # winnerByExperiance=Commpetition.objects.order_by('-numberOfExperience')
         serializer = self.serializer_class()
-        
         
         return Response({
             "status": "success",
@@ -63,6 +68,12 @@ class Bid_list(APIView):
         serializer = BidInitSerializer( bid, many=True)
         return Response(serializer.data)
 
+class Bid_Complist(APIView):
+    serializer_class=BidListSer
+    def get(self, request, format=None):
+        bid = Commpetition.objects.all()
+        serializer = BidListSer( bid, many=True)
+        return Response(serializer.data)
 
 class FindByBidID(generics.ListCreateAPIView):
    serializer_class = BidInitSerializer

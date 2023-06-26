@@ -5,6 +5,8 @@ from Auth import models as auth_model
 class announcement(models.Model):
     ID= models.AutoField(primary_key=True)
     title=models.CharField(max_length=500, null=True)
+    # service_ID = models.IntegerField()
+
     dep_ID = models.ForeignKey(auth_model.department, on_delete=models.CASCADE)
     # admin_ID= models.ForeignKey(auth_model.admin, on_delete=models.CASCADE)
     # admin_ID=models.BigIntegerField(unique=True,)
